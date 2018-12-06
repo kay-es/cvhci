@@ -1,4 +1,4 @@
-from utils.utility import get_data
+from main.utils import get_path
 
-print(get_data('A1', 'train'))
-print(get_data('A2', 'test', 'n'))
+print(get_path('A1', 'train'))
+print(get_path('A2', 'test', 'n'))
