@@ -88,4 +88,4 @@ fabric.properties
 **/.DS_Store
 
 .idea/
-__pycache__/
+**/.__pycache__/
