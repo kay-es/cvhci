@@ -15,7 +15,7 @@ class DataLoader:
 
     @staticmethod
     def A3():
-        raise NotImplementedError
+        return DataLoader(A2())
 
     def get_train_loader(self):
         return self.loader.get_train_loader()

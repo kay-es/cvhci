@@ -90,3 +90,10 @@ class A2(Strategy):
         dataset = torchvision.datasets.ImageFolder(get_path('A2', dataset), transform=self.transform)
         iterator = torch.utils.data.DataLoader(dataset, batch_size=64, shuffle=True)
         return iterator
+
+class A3(Strategy):
+
+    def __init__(self, transform=transforms.Compose([transforms.ToTensor(),
+                                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])):
+        super().__init__(transform)
+        raise NotImplementedError
