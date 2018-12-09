@@ -6,8 +6,16 @@ class DataLoader:
         self.loader: Strategy = strategy
 
     @staticmethod
-    def get_a1_loader():
+    def A1():
         return DataLoader(A1())
+
+    @staticmethod
+    def A2():
+        raise NotImplementedError
+
+    @staticmethod
+    def A3():
+        raise NotImplementedError
 
     def get_train(self):
         return self.loader.get_train()
@@ -17,6 +25,8 @@ class DataLoader:
 
     def get_validation(self):
         return self.loader.get_validation()
+
+
 
 
 
