@@ -1,4 +1,22 @@
-from main.utils import get_path
+from main.utils.loaders.Strategies import Strategy, A1
 
-print(get_path('A1', 'train'))
-print(get_path('A2', 'test', 'n'))
+class DataLoader:
+
+    def __init__(self, strategy):
+        self.loader: Strategy = strategy
+
+    @staticmethod
+    def get_a1_loader():
+        return DataLoader(A1())
+
+    def get_train(self):
+        return self.loader.get_train()
+
+    def get_test(self):
+        return self.loader.get_test()
+
+    def get_validation(self):
+        return self.loader.get_validation()
+
+
+
