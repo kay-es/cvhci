@@ -96,4 +96,12 @@ class A3(Strategy):
     def __init__(self, transform=transforms.Compose([transforms.ToTensor(),
                                             transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])):
         super().__init__(transform)
+
+    def get_train_loader(self):
+        raise NotImplementedError
+
+    def get_test_loader(self):
+        raise NotImplementedError
+
+    def get_validation_loader(self):
         raise NotImplementedError
