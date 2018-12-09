@@ -17,14 +17,14 @@ class DataLoader:
     def A3():
         raise NotImplementedError
 
-    def get_train(self):
-        return self.loader.get_train()
+    def get_train_loader(self):
+        return self.loader.get_train_loader()
 
-    def get_test(self):
-        return self.loader.get_test()
+    def get_test_loader(self):
+        return self.loader.get_test_loader()
 
-    def get_validation(self):
-        return self.loader.get_validation()
+    def get_validation_loader(self):
+        return self.loader.get_validation_loader()
 
 
 

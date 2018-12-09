@@ -9,16 +9,17 @@ from torchvision import transforms
 
 class Strategy(Dataset):
     
-    def __init__(self, transform=None):
+    def __init__(self, transform=transforms.Compose([transforms.ToTensor(),
+                                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])):
         self.transform = transform
 
-    def get_train(self):
+    def get_train_loader(self):
         raise NotImplementedError
 
-    def get_test(self):
+    def get_test_loader(self):
         raise NotImplementedError
 
-    def get_validation(self):
+    def get_validation_loader(self):
         raise NotImplementedError
 
     def copy(self):
@@ -26,26 +27,27 @@ class Strategy(Dataset):
 
 class A1(Strategy):
 
-    def __init__(self, transform=None):
+    def __init__(self, transform=transforms.Compose([transforms.ToTensor(),
+                                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])):
         super().__init__(transform)
         self.img_path = None
         self.mask_path = None
         self.data = None
 
-    def get_train(self):
-        train_iterator = self.copy()
-        train_iterator.__set_dataset__('train')
-        return train_iterator
+    def get_train_loader(self):
+        train_loader = self.copy()
+        train_loader.__set_dataset__('train')
+        return train_loader
 
-    def get_test(self):
-        test_iterator = self.copy()
-        test_iterator.__set_dataset__('test')
-        return test_iterator
+    def get_test_loader(self):
+        test_loader = self.copy()
+        test_loader.__set_dataset__('test')
+        return test_loader
 
-    def get_validation(self):
-        validation_iterator = self.copy()
-        validation_iterator.__set_dataset__('validation')
-        return validation_iterator
+    def get_validation_loader(self):
+        validation_loader = self.copy()
+        validation_loader.__set_dataset__('validation')
+        return validation_loader
 
     def __set_dataset__(self, dataset):
         self.img_path = get_path('A1', dataset + '/img')
@@ -71,23 +73,20 @@ class A1(Strategy):
 
 class A2(Strategy):
 
-    def __init__(self, transform=None):
-        if transform == None:
-            # Define a transform to normalize the data
-            default_transform = transforms.Compose([transforms.ToTensor(),
-                                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-        super().__init__(default_transform)
+    def __init__(self, transform=transforms.Compose([transforms.ToTensor(),
+                                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])):
+        super().__init__(transform)
 
-    def get_train(self):
-        return self.get_dataset('train')
+    def get_train_loader(self):
+        return self.get_dataloader('train')
 
-    def get_test(self):
-        return self.get_dataset('test')
+    def get_test_loader(self):
+        return self.get_dataloader('test')
 
-    def get_validation(self):
-        return self.get_dataset('validation')
+    def get_validation_loader(self):
+        return self.get_dataloader('validation')
 
-    def get_dataset(self, dataset: str):
+    def get_dataloader(self, dataset: str):
         dataset = torchvision.datasets.ImageFolder(get_path('A2', dataset), transform=self.transform)
         iterator = torch.utils.data.DataLoader(dataset, batch_size=64, shuffle=True)
         return iterator
