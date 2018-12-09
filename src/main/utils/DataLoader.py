@@ -1,4 +1,4 @@
-from main.utils.loaders.Strategies import Strategy, A1
+from main.utils.loaders.Strategies import Strategy, A1, A2
 
 class DataLoader:
 
@@ -11,7 +11,7 @@ class DataLoader:
 
     @staticmethod
     def A2():
-        raise NotImplementedError
+        return DataLoader(A2())
 
     @staticmethod
     def A3():

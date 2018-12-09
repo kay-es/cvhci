@@ -3,6 +3,9 @@ from torch.utils.data.dataset import Dataset
 import os
 from skimage import io
 import copy
+import torchvision
+import torch
+from torchvision import transforms
 
 class Strategy(Dataset):
     
@@ -65,3 +68,26 @@ class A1(Strategy):
             image = self.transform(image)
 
         return image, label
+
+class A2(Strategy):
+
+    def __init__(self, transform=None):
+        if transform == None:
+            # Define a transform to normalize the data
+            default_transform = transforms.Compose([transforms.ToTensor(),
+                                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
+        super().__init__(default_transform)
+
+    def get_train(self):
+        return self.get_dataset('train')
+
+    def get_test(self):
+        return self.get_dataset('test')
+
+    def get_validation(self):
+        return self.get_dataset('validation')
+
+    def get_dataset(self, dataset: str):
+        dataset = torchvision.datasets.ImageFolder(get_path('A2', dataset), transform=self.transform)
+        iterator = torch.utils.data.DataLoader(dataset, batch_size=64, shuffle=True)
+        return iterator
