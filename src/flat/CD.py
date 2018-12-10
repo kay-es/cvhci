@@ -5,9 +5,9 @@ import numpy as np
 
 vgg16_pretrained = models.vgg16(pretrained=True)
 
-class CD(torch.nn.Module):
+class Conv(torch.nn.Module):
     def __init__(self, n_classes):
-        super(VGG16_conv, self).__init__()
+        super(Conv, self).__init__()
         # VGG16 (using return_indices=True on the MaxPool2d layers)
         self.features = torch.nn.Sequential(
             # conv1
@@ -89,9 +89,9 @@ class CD(torch.nn.Module):
         return output
 
 
-class VGG16_deconv(torch.nn.Module):
+class Deconv(torch.nn.Module):
     def __init__(self):
-        super(VGG16_deconv, self).__init__()
+        super(Deconv, self).__init__()
         self.conv2DeconvIdx = {0: 17, 2: 16, 5: 14, 7: 13, 10: 11, 12: 10, 14: 9, 17: 7, 19: 6, 21: 5, 24: 3, 26: 2,
                                28: 1}
         self.conv2DeconvBiasIdx = {0: 16, 2: 14, 5: 13, 7: 11, 10: 10, 12: 9, 14: 7, 17: 6, 19: 5, 21: 3, 24: 2, 26: 1,

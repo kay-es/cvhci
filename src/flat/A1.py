@@ -7,11 +7,11 @@ import re
 import time
 from tensorboardX import SummaryWriter
 
-from CD import CD
+from ConvDeconv import ConvDeconv
 from DataLoader import DataLoader
 
 writer = SummaryWriter()
-model = CD()  # Neural network model object
+model = ConvDeconv()  # Neural network model object
 if torch.cuda.is_available():  # use gpu if available
     model.cuda()  # move model to gpu
 
@@ -56,7 +56,7 @@ for epoch in range(num_epochs):
     for img, label in iter(a1_train_loader):
         input = img.type(
             torch.FloatTensor)  # typecasting to FloatTensor as it is compatible with CUDA
-        output = label.type(torch.FloatTensor)
+        output = img.type(torch.FloatTensor)
         if torch.cuda.is_available():  # move to gpu if available
             input_image = Variable(input.cuda())  # Converting a Torch Tensor to Autograd Variable
             output_image = Variable(output.cuda())
@@ -79,7 +79,7 @@ for epoch in range(num_epochs):
             for img_val, mask_val in iter(a1_validation_loader):  # for testing
                 input_val = img_val.type(
                     torch.FloatTensor)  # typecasting to FloatTensor as it is compatible with CUDA
-                output_val = mask_val.type(torch.FloatTensor)
+                output_val = img_val.type(torch.FloatTensor)
                 if torch.cuda.is_available():  # move to gpu if available
                     input_image_val = Variable(input_val.cuda())  # Converting a Torch Tensor to Autograd Variable
                     output_image_val = Variable(output_val.cuda())
