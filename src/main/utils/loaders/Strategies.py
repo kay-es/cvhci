@@ -1,4 +1,4 @@
-from main.utils import get_path
+from src.main.utils import get_path
 from torch.utils.data.dataset import Dataset
 import os
 from skimage import io
