@@ -8,8 +8,7 @@ from ConvDeconv import ConvDeconv
 from ResourceHelper import get_path
 
 model=ConvDeconv()
-#test = get_path('A1', 'test/img-1153828689.90-0.png') #sys.argv[1]
-test = get_path('A1', 'train/mask-img-1153834912.10-0.png') #sys.argv[1]
+test = get_path('A1', 'test/img-1153828689.90-0.png') #sys.argv[1]
 img = cv2.imread(test, cv2.IMREAD_COLOR).transpose((0, 1, 2))
 
 transform = transforms.Compose([transforms.ToTensor()])
