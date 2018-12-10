@@ -1,4 +1,4 @@
-from ..ResourceHelper import get_path
+from main.utils.ResourceHelper import get_path
 from torch.utils.data.dataset import Dataset
 import os
 from skimage import io
