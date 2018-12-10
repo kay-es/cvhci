@@ -1,4 +1,4 @@
-from src.main.utils.loaders.Strategies import Strategy, A1, A2
+from .loaders.Strategies import Strategy, A1, A2
 
 class DataLoader:
 

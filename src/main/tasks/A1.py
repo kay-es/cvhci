@@ -7,8 +7,8 @@ import re
 import time
 from tensorboardX import SummaryWriter
 
-from src.main.architectures.ConvDeconv import ConvDeconv
-from src.main.utils.DataLoader import DataLoader
+from ..architectures.ConvDeconv import ConvDeconv
+from ..utils.DataLoader import DataLoader
 
 writer = SummaryWriter()
 model = ConvDeconv()  # Neural network model object
