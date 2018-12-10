@@ -62,14 +62,18 @@ class A1(Strategy):
     def __getitem__(self, idx):
         img_name = self.data[idx]
         im_path = os.path.join(self.img_path, img_name)
-        image = cv2.imread(im_path, cv2.IMREAD_COLOR)
+        image = cv2.imread(im_path, cv2.IMREAD_COLOR).transpose((0, 1, 2))
 
         label_name = "mask-" + img_name
         label_path = os.path.join(self.mask_path, label_name)
-        label = cv2.imread(label_path, cv2.IMREAD_COLOR)
+        label = cv2.imread(label_path, cv2.IMREAD_COLOR).transpose((0, 1 ,2))
+
+        image = cv2.resize(image, (512,512))
+        label = cv2.resize(label, (512,512))
 
         if self.transform:
             image = self.transform(image)
+            label = self.transform(label)
 
         return image, label
 
