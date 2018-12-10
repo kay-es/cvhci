@@ -17,12 +17,14 @@ img = transform(img)
 input_image=img.unsqueeze(0)
 input_image=input_image.type(torch.FloatTensor)
 input_image=Variable(input_image)
+input_image=input_image.cuda()
 
 model=torch.load("checkpoints/model_iter_500.pt")
 
 output_image=model(input_image)
 
 output_image=output_image.squeeze()
+output_image=output_image.cpu()
 output_image.data=output_image.data.type(torch.ByteTensor)
 output_image=output_image.data.numpy()
 output_image=output_image.transpose((1,2,0))
