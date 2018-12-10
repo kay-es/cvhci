@@ -6,4 +6,4 @@ def get_path(task: str, dataset: str, special: str = ""):
     :return: the relative path of the directory specified by the package path
     '''
     data = dataset + '/' + special if special != "" else dataset
-    return resource_filename('src.resources', task + '/data/' + data)
+    return '../resources/' + task + '/data/' + data
