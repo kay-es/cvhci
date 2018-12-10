@@ -7,11 +7,11 @@ import re
 import time
 from tensorboardX import SummaryWriter
 
-from ConvDeconv import ConvDeconv
+from CD import CD
 from DataLoader import DataLoader
 
 writer = SummaryWriter()
-model = ConvDeconv()  # Neural network model object
+model = CD()  # Neural network model object
 if torch.cuda.is_available():  # use gpu if available
     model.cuda()  # move model to gpu
 

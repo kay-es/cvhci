@@ -4,10 +4,10 @@ from torch.autograd import Variable
 from torchvision import transforms
 import cv2
 import sys
-from ConvDeconv import ConvDeconv
+from CD import CD
 from ResourceHelper import get_path
 
-model=ConvDeconv()
+model=CD()
 test = get_path('A1', 'test/img-1153828689.90-0.png') #sys.argv[1]
 img = cv2.imread(test, cv2.IMREAD_COLOR).transpose((0, 1, 2))
 
