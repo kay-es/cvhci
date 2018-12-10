@@ -4,6 +4,6 @@ from setuptools import setup
 setup(name='cvhci',
       version='0.0.1',
       install_requires=[
-          'pytorch'
+          'pytorch', 'cv2', 'scikit-image'
                         ]
       )

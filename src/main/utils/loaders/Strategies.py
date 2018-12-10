@@ -7,6 +7,8 @@ import torchvision
 import torch
 from torchvision import transforms
 
+import cv2
+
 class Strategy(Dataset):
     
     def __init__(self, transform=transforms.Compose([transforms.ToTensor(),
@@ -60,11 +62,11 @@ class A1(Strategy):
     def __getitem__(self, idx):
         img_name = self.data[idx]
         im_path = os.path.join(self.img_path, img_name)
-        image = io.imread(im_path)
+        image = cv2.imread(im_path, cv2.IMREAD_COLOR)
 
         label_name = "mask-" + img_name
         label_path = os.path.join(self.mask_path, label_name)
-        label = io.imread(label_path)
+        label = cv2.imread(label_path, cv2.IMREAD_COLOR)
 
         if self.transform:
             image = self.transform(image)
