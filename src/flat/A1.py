@@ -78,7 +78,17 @@ for epoch in range(num_epochs):
         writer.add_scalar('Training Loss', loss.item(), checkpoint_iter)
         checkpoint_iter = checkpoint_iter + 1
 
+
+
         if checkpoint_iter % 10 == 0 or checkpoint_iter == 1:
+
+            print(model.conv1.weight.data)
+            print(model.conv2.weight.data)
+            print(model.conv3.weight.data)
+            print(model.deconv1.weight.data)
+            print(model.deconv2.weight.data)
+            print(model.deconv3.weight.data)
+
             # Calculate Accuracy
             test_loss = 0
             total = 0
