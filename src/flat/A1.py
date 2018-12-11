@@ -16,7 +16,7 @@ from ConvDeconv import ConvDeconv
 from DataLoader import DataLoader
 
 writer = SummaryWriter()
-model = FCN8()  # Neural network model object
+model = FCN8(1)  # Neural network model object
 if torch.cuda.is_available():  # use gpu if available
     model.cuda()  # move model to gpu
 
