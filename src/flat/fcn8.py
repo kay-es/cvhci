@@ -23,16 +23,16 @@ class FCN8(nn.Module):
                 m.requires_grad = False
 
         self.fconn = nn.Sequential(
-            nn.Conv2d(512, 4096, 7),
+            nn.Conv2d(512, 1024, 7),
             nn.ReLU(inplace=True),
             nn.Dropout(),
-            nn.Conv2d(4096, 4096, 1),
+            nn.Conv2d(1024, 1024, 1),
             nn.ReLU(inplace=True),
             nn.Dropout(),
         )
         self.score_feat3 = nn.Conv2d(256, num_classes, 1)
         self.score_feat4 = nn.Conv2d(512, num_classes, 1)
-        self.score_fconn = nn.Conv2d(4096, num_classes, 1)
+        self.score_fconn = nn.Conv2d(1024, num_classes, 1)
 
     def forward(self, x):
         feats = self.feats(x)

@@ -16,7 +16,7 @@ from ConvDeconv import ConvDeconv
 from DataLoader import DataLoader
 
 writer = SummaryWriter()
-model = ConvDeconv()#FCN8(1)  # Neural network model object
+model = FCN8(1)  # Neural network model object
 if torch.cuda.is_available():  # use gpu if available
     model.cuda()  # move model to gpu
 
@@ -46,8 +46,8 @@ if len(check):
 
 criterion = nn.MSELoss()
 learning_rate = 0.1
-#optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=0.8)
-optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=0.8)
+#optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 beg = time.time()
 print("Training Started!")
