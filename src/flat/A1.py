@@ -59,7 +59,7 @@ for epoch in range(num_epochs):
 
     for img, label in iter(a1_train_loader):
         input = img#.type(torch.FloatTensor)  # typecasting to FloatTensor as it is compatible with CUDA
-        output = img#.type(torch.FloatTensor)
+        output = label#.type(torch.FloatTensor)
         if torch.cuda.is_available():  # move to gpu if available
             input_image = Variable(input.cuda())  # Converting a Torch Tensor to Autograd Variable
             output_image = Variable(output.cuda())
@@ -95,7 +95,7 @@ for epoch in range(num_epochs):
             # Iterate through test dataset
             for img_val, mask_val in iter(a1_validation_loader):  # for testing
                 input_val = img
-                output_val = img
+                output_val = mask_val
                 if torch.cuda.is_available():  # move to gpu if available
                     input_image_val = Variable(input_val.cuda())  # Converting a Torch Tensor to Autograd Variable
                     output_image_val = Variable(output_val.cuda())
