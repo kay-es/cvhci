@@ -9,7 +9,7 @@ from ResourceHelper import get_path
 import matplotlib.pyplot as plt
 
 model=ConvDeconv()
-test = get_path('A1', 'test/img-1153828689.90-0.png') #sys.argv[1]
+test = get_path('A1', 'train/img-1153828697.70-0.png') #sys.argv[1]
 img = cv2.imread(test, cv2.IMREAD_COLOR).transpose((0, 1, 2))
 
 
@@ -25,7 +25,7 @@ input_image=input_image.type(torch.FloatTensor)
 input_image=Variable(input_image)
 #input_image=input_image.cuda()
 
-model=torch.load("checkpoints/model_iter_2000.pt", map_location='cpu')
+model=torch.load("checkpoints/model_iter_9050.pt", map_location='cpu')
 
 output_image=model(input_image)
 

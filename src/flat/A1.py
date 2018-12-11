@@ -10,12 +10,13 @@ import re
 import time
 from tensorboardX import SummaryWriter
 import matplotlib.pyplot as plt
+from fcn8 import FCN8
 
 from ConvDeconv import ConvDeconv
 from DataLoader import DataLoader
 
 writer = SummaryWriter()
-model = ConvDeconv()  # Neural network model object
+model = FCN8()  # Neural network model object
 if torch.cuda.is_available():  # use gpu if available
     model.cuda()  # move model to gpu
 
