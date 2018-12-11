@@ -1,4 +1,3 @@
-from ResourceHelper import get_path
 from torch.utils.data.dataset import Dataset
 import os
 from skimage import io
@@ -8,6 +7,16 @@ import torch
 from torchvision import transforms
 
 import cv2
+
+from pkg_resources import resource_filename
+
+def get_path(task: str, dataset: str, special: str = ""):
+    '''
+    :param package: the directory to load (e.g. 'A1', 'train' or 'A2', 'test', 'n')
+    :return: the relative path of the directory specified by the package path
+    '''
+    data = dataset + '/' + special if special != "" else dataset
+    return '../resources/' + task + '/data/' + data
 
 class Strategy(Dataset):
     

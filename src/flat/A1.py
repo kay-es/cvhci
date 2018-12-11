@@ -42,55 +42,38 @@ if len(check):
     checkpoint_iter = int(re.findall(r'\d+', check[-1])[0])
     checkpoint_iter_new = checkpoint_iter
     print("Resuming from iteration " + str(checkpoint_iter))
-    # os.system('python visualise.py')
 
 
-criterion = nn.MSELoss()  # Loss Class
+criterion = nn.MSELoss()
+learning_rate = 0.1
+#optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=0.8)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-learning_rate = 0.01
-optimizer = torch.optim.SGD(model.parameters(), lr=0.1, momentum=0.8)
-#optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)  # optimizer class
-#scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=50,gamma=0.1)  # this will decrease the learning rate by factor of 0.1
-
-# https://discuss.pytorch.org/t/can-t-import-torch-optim-lr-scheduler/5138/6
-beg = time.time()  # time at the beginning of training
+beg = time.time()
 print("Training Started!")
 for epoch in range(num_epochs):
     print("\nEPOCH " + str(epoch + 1) + " of " + str(num_epochs) + "\n")
 
-    for img, label in iter(a1_train_loader):
-        input = img#.type(torch.FloatTensor)  # typecasting to FloatTensor as it is compatible with CUDA
-        output = label#.type(torch.FloatTensor)
-        if torch.cuda.is_available():  # move to gpu if available
-            input_image = Variable(input.cuda())  # Converting a Torch Tensor to Autograd Variable
+    for input, output in iter(a1_train_loader):
+        if torch.cuda.is_available():
+            input_image = Variable(input.cuda())
             output_image = Variable(output.cuda())
         else:
             input_image = Variable(input)
             output_image = Variable(output)
 
-        optimizer.zero_grad()  # https://discuss.pytorch.org/t/why-do-we-need-to-set-the-gradients-manually-to-zero-in-pytorch/4903/3
+        optimizer.zero_grad()
         outputs = model(input_image)
-
         loss = criterion(outputs, output_image)
-
-
         loss.backward()  # Backprop
         optimizer.step()  # Weight update
         writer.add_scalar('Training Loss', loss.item(), checkpoint_iter)
         checkpoint_iter = checkpoint_iter + 1
 
-
-
         if checkpoint_iter % 10 == 0 or checkpoint_iter == 1:
-
-
-            # Calculate Accuracy
             test_loss = 0
             total = 0
-            # Iterate through test dataset
-            for img_val, mask_val in iter(a1_validation_loader):  # for testing
-                input_val = img_val
-                output_val = mask_val
+            for input_val, output_val in iter(a1_validation_loader):  # for testing
                 if torch.cuda.is_available():  # move to gpu if available
                     input_image_val = Variable(input_val.cuda())  # Converting a Torch Tensor to Autograd Variable
                     output_image_val = Variable(output_val.cuda())
@@ -98,27 +81,16 @@ for epoch in range(num_epochs):
                     input_image_val = Variable(input_val)
                     output_image_val = Variable(output_val)
 
-                # Forward pass only to get logits/output
                 outputs = model(input_image_val)
                 test_loss += criterion(outputs, output_image_val).item()
-                total += mask_val.size(0)
+                total += output_val.size(0)
             test_loss = test_loss / total  # sum of test loss for all test cases/total cases
-            writer.add_scalar('Test Loss', test_loss, checkpoint_iter)
-            # Print Loss
-            time_since_beg = (time.time() - beg) / 60
-            print('Iteration: {}. Loss: {}. Test Loss: {}. Time(mins) {}'.format(checkpoint_iter, loss.item(), test_loss,
-                                                                                 time_since_beg))
-            #oi = outputs[0].squeeze()
-            #oi.data = oi.data.type(torch.ByteTensor)
-            #oi = oi.data.numpy()
-            #oi = oi.transpose((1, 2, 0))
 
-            #imgplot = plt.imshow(oi)
-            #plt.show()
+            time_since_beg = (time.time() - beg) / 60
+            print(
+                'Iteration: {}. Loss: {}. Test Loss: {}. Time(mins) {}'.format(checkpoint_iter, loss.item(), test_loss,
+                                                                               time_since_beg))
+
         if checkpoint_iter % 50 == 0:
             torch.save(model, 'checkpoints/model_iter_' + str(checkpoint_iter) + '.pt')
             print("model saved at iteration : " + str(checkpoint_iter))
-            writer.export_scalars_to_json("graphs/all_scalars_" + str(
-                checkpoint_iter_new) + ".json")  # saving loss vs iteration data to be used by visualise.py
-    #scheduler.step()
-writer.close()
