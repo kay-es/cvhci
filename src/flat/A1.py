@@ -11,8 +11,8 @@ import time
 from tensorboardX import SummaryWriter
 import matplotlib.pyplot as plt
 
-from main.architectures.ConvDeconv import ConvDeconv
-from main.utils.DataLoader import DataLoader
+from ConvDeconv import ConvDeconv
+from DataLoader import DataLoader
 
 writer = SummaryWriter()
 model = ConvDeconv()  # Neural network model object
