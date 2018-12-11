@@ -88,7 +88,7 @@ for epoch in range(num_epochs):
             total = 0
             # Iterate through test dataset
             for img_val, mask_val in iter(a1_validation_loader):  # for testing
-                input_val = img
+                input_val = img_val
                 output_val = mask_val
                 if torch.cuda.is_available():  # move to gpu if available
                     input_image_val = Variable(input_val.cuda())  # Converting a Torch Tensor to Autograd Variable
