@@ -59,7 +59,7 @@ for epoch in range(num_epochs):
 
     for img, label in iter(a1_train_loader):
         input = img#.type(torch.FloatTensor)  # typecasting to FloatTensor as it is compatible with CUDA
-        output = label#.type(torch.FloatTensor)
+        output = img#.type(torch.FloatTensor)
         if torch.cuda.is_available():  # move to gpu if available
             input_image = Variable(input.cuda())  # Converting a Torch Tensor to Autograd Variable
             output_image = Variable(output.cuda())
@@ -75,7 +75,7 @@ for epoch in range(num_epochs):
 
         loss.backward()  # Backprop
         optimizer.step()  # Weight update
-        writer.add_scalar('Training Loss', loss.item() / 10, checkpoint_iter)
+        writer.add_scalar('Training Loss', loss.item(), checkpoint_iter)
         checkpoint_iter = checkpoint_iter + 1
 
         if checkpoint_iter % 10 == 0 or checkpoint_iter == 1:
@@ -84,9 +84,8 @@ for epoch in range(num_epochs):
             total = 0
             # Iterate through test dataset
             for img_val, mask_val in iter(a1_validation_loader):  # for testing
-                input_val = img_val.type(
-                    torch.FloatTensor)  # typecasting to FloatTensor as it is compatible with CUDA
-                output_val = mask_val.type(torch.FloatTensor)
+                input_val = img
+                output_val = img
                 if torch.cuda.is_available():  # move to gpu if available
                     input_image_val = Variable(input_val.cuda())  # Converting a Torch Tensor to Autograd Variable
                     output_image_val = Variable(output_val.cuda())
@@ -102,7 +101,7 @@ for epoch in range(num_epochs):
             writer.add_scalar('Test Loss', test_loss, checkpoint_iter)
             # Print Loss
             time_since_beg = (time.time() - beg) / 60
-            print('Iteration: {}. Loss: {}. Test Loss: {}. Time(mins) {}'.format(checkpoint_iter, loss.item() / 10, test_loss,
+            print('Iteration: {}. Loss: {}. Test Loss: {}. Time(mins) {}'.format(checkpoint_iter, loss.item(), test_loss,
                                                                                  time_since_beg))
             #oi = outputs[0].squeeze()
             #oi.data = oi.data.type(torch.ByteTensor)
