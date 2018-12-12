@@ -84,8 +84,9 @@ optimiser = optim.RMSprop(params, lr=args.lr, momentum=args.momentum, weight_dec
 scores, mean_scores = [], []
 #https://github.com/Kaixhin/FCN-semantic-segmentation
 
-def train(e, checkpoint_iter):
+def train(e):
   net.train()
+  global checkpoint_iter
   for i, (input, target) in enumerate(train_loader):
     optimiser.zero_grad()
     if torch.cuda.is_available():
@@ -94,14 +95,14 @@ def train(e, checkpoint_iter):
       input, target = Variable(input), Variable(target)
     output = net(input)
     loss = crit(output, target)
-    print("epoche:", e,"-", i,": total-", i * e + checkpoint_iter, "loss:", loss.item())
+    print("epoche:", e,"-", (i+1),": total-", (i+1) * e + checkpoint_iter, "loss:", loss.item())
     loss.backward()
     optimiser.step()
 
     checkpoint_iter += 1
     if e * i % 50 == 0 and i > 0:
-      torch.save(net, 'checkpoints/segrest_' + str(e * i + checkpoint_iter) + '.pt')
-      print("model saved at iteration : " + str(e * i + checkpoint_iter))
+      torch.save(net, 'checkpoints/segrest_' + str(e * (i+1) + checkpoint_iter) + '.pt')
+      print("model saved at iteration : " + str(e * (i+1) + checkpoint_iter))
 
 
 # Calculates class intersections over unions
@@ -174,5 +175,5 @@ def iou(pred, target):
 
 #test(0)
 for e in range(1, args.epochs + 1):
-  train(e, checkpoint_iter)
+  train(e)
  # test(e)
