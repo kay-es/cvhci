@@ -8,10 +8,10 @@ from torchvision import models
 
 class FCN8(nn.Module):
 
-    def __init__(self, num_classes):
+    def __init__(self, num_classes=1):
         super().__init__()
 
-        feats = list(models.vgg16(pretrained=True).features.children())
+        feats = list(models.vgg16(pretrained=False).features.children())
 
         self.feats = nn.Sequential(*feats[0:9])
         self.feat3 = nn.Sequential(*feats[10:16])
@@ -23,16 +23,16 @@ class FCN8(nn.Module):
                 m.requires_grad = False
 
         self.fconn = nn.Sequential(
-            nn.Conv2d(512, 1024, 7),
+            nn.Conv2d(512, 4096, 7),
             nn.ReLU(inplace=True),
             nn.Dropout(),
-            nn.Conv2d(1024, 1024, 1),
+            nn.Conv2d(4096, 4096, 1),
             nn.ReLU(inplace=True),
             nn.Dropout(),
         )
         self.score_feat3 = nn.Conv2d(256, num_classes, 1)
         self.score_feat4 = nn.Conv2d(512, num_classes, 1)
-        self.score_fconn = nn.Conv2d(1024, num_classes, 1)
+        self.score_fconn = nn.Conv2d(4096, num_classes, 1)
 
     def forward(self, x):
         feats = self.feats(x)
@@ -187,15 +187,15 @@ class UNet(nn.Module):
         dec4 = self.dec4(dec3)
         center = self.center(dec4)
         enc4 = self.enc4(torch.cat([
-            center, F.upsample_bilinear(dec4, center.size()[2:])], 1))
+            center, F.interpolate(dec4, center.size()[2:])], 1))
         enc3 = self.enc3(torch.cat([
-            enc4, F.upsample_bilinear(dec3, enc4.size()[2:])], 1))
+            enc4, F.interpolate(dec3, enc4.size()[2:])], 1))
         enc2 = self.enc2(torch.cat([
-            enc3, F.upsample_bilinear(dec2, enc3.size()[2:])], 1))
+            enc3, F.interpolate(dec2, enc3.size()[2:])], 1))
         enc1 = self.enc1(torch.cat([
-            enc2, F.upsample_bilinear(dec1, enc2.size()[2:])], 1))
+            enc2, F.interpolate(dec1, enc2.size()[2:])], 1))
 
-        return F.upsample_bilinear(self.final(enc1), x.size()[2:])
+        return F.interpolate(self.final(enc1), x.size()[2:])
 
 
 class SegNetEnc(nn.Module):
