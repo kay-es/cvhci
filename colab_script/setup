@@ -1,6 +1,0 @@
-!git clone https://colab-trainer:\wVjG9cM3UZ}@github.com/kay-es/cvhci.git
-0a7kS5DfDj0f
-cd cvhci
-!git fetch
-!git checkout A1
-!python src/setup.py install
