@@ -1,5 +1,9 @@
-from main.utils.DataLoader import DataLoader
+import sys
+sys.path.append("./utils")
+
+import DataLoader
 import torch
+
 
 a1_loader = DataLoader.A1()
 a1_train_loader = torch.utils.data.DataLoader(a1_loader.get_train_loader(), batch_size=64, shuffle=True)

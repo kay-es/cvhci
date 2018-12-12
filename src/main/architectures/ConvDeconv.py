@@ -1,4 +1,5 @@
 import torch.nn as nn
+import numpy as np
 
 class ConvDeconv(nn.Module):
 
@@ -7,7 +8,7 @@ class ConvDeconv(nn.Module):
 
         # Convolution 1
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=16, kernel_size=4, stride=1, padding=0)
-        nn.init.xavier_uniform_(self.conv1.weight)  # Xaviers Initialisation
+        nn.init.xavier_uniform_(self.conv1.weight, gain=np.sqrt(2.0))  # Xaviers Initialisation
         self.swish1 = nn.ReLU()
 
         # Max Pool 1
@@ -15,7 +16,7 @@ class ConvDeconv(nn.Module):
 
         # Convolution 2
         self.conv2 = nn.Conv2d(in_channels=16, out_channels=32, kernel_size=5)
-        nn.init.xavier_uniform_(self.conv2.weight)
+        nn.init.xavier_uniform_(self.conv2.weight, gain=np.sqrt(2.0))
         self.swish2 = nn.ReLU()
 
         # Max Pool 2
@@ -23,14 +24,14 @@ class ConvDeconv(nn.Module):
 
         # Convolution 3
         self.conv3 = nn.Conv2d(in_channels=32, out_channels=64, kernel_size=3)
-        nn.init.xavier_uniform_(self.conv3.weight)
+        nn.init.xavier_uniform_(self.conv3.weight, gain=np.sqrt(2.0))
         self.swish3 = nn.ReLU()
 
         ##########################################################################
 
         # De Convolution 1
         self.deconv1 = nn.ConvTranspose2d(in_channels=64, out_channels=32, kernel_size=3)
-        nn.init.xavier_uniform_(self.deconv1.weight)
+        nn.init.xavier_uniform_(self.deconv1.weight, gain=np.sqrt(2.0))
         self.swish4 = nn.ReLU()
 
         # Max UnPool 1
@@ -38,7 +39,7 @@ class ConvDeconv(nn.Module):
 
         # De Convolution 2
         self.deconv2 = nn.ConvTranspose2d(in_channels=32, out_channels=16, kernel_size=5)
-        nn.init.xavier_uniform_(self.deconv2.weight)
+        nn.init.xavier_uniform_(self.deconv2.weight, gain=np.sqrt(2.0))
         self.swish5 = nn.ReLU()
 
         # Max UnPool 2
@@ -46,7 +47,7 @@ class ConvDeconv(nn.Module):
 
         # DeConvolution 3
         self.deconv3 = nn.ConvTranspose2d(in_channels=16, out_channels=3, kernel_size=4)
-        nn.init.xavier_uniform_(self.deconv3.weight)
+        nn.init.xavier_uniform_(self.deconv3.weight, gain=np.sqrt(2.0))
         self.swish6 = nn.ReLU()
 
     def forward(self, x):

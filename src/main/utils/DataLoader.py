@@ -1,4 +1,6 @@
-from main.utils.loaders.Strategies import Strategy, A1, A2
+import sys
+sys.path.append("./utils/loaders")
+from Strategies import Strategy, A1, A2
 
 class DataLoader:
 
