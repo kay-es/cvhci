@@ -50,6 +50,7 @@ net = SegResNet(num_classes, pretrained_net)#cuda
 if torch.cuda.is_available():  # use gpu if available
   net.cuda()
 
+
 checkpoint_iter = 0
 check = os.listdir("checkpoints")
 if len(check):
@@ -61,8 +62,8 @@ if len(check):
     checkpoint_iter = int(re.findall(r'\d+', check[-1])[0]) + 1
     print("Resuming from iteration " + str(checkpoint_iter))
 
-#crit = nn.BCELoss()#.cuda()
-crit = nn.MSELoss()
+crit = nn.BCELoss()#.cuda()
+#crit = nn.MSELoss()
 if torch.cuda.is_available():
   crit.cuda()
 #crit = nn.CrossEntropyLoss()
