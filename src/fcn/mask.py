@@ -22,7 +22,7 @@ input_image=input_image.type(torch.FloatTensor)
 input_image=Variable(input_image)
 #input_image=input_image.cuda()
 
-model=torch.load("checkpoints/segrest_0.pt", map_location='cpu')
+model=torch.load("checkpoints/segrest_150.pt", map_location='cpu')
 
 output_image=model(input_image)
 

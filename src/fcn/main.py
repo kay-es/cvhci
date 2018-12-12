@@ -58,7 +58,7 @@ if len(check):
       net = torch.load("checkpoints/" + check[-1])
     else:
       net = torch.load("checkpoints/" + check[-1], map_location='cpu')
-    checkpoint_iter = int(re.findall(r'\d+', check[-1])[0] + 1)
+    checkpoint_iter = int(re.findall(r'\d+', check[-1])[0]) + 1
     print("Resuming from iteration " + str(checkpoint_iter))
 
 #crit = nn.BCELoss()#.cuda()
