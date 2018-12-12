@@ -18,13 +18,13 @@ from model import FeatureResNet, SegResNet
 # Setup
 parser = ArgumentParser(description='Semantic segmentation')
 parser.add_argument('--seed', type=int, default=42, help='Random seed')
-parser.add_argument('--workers', type=int, default=8, help='Data loader workers')
+parser.add_argument('--workers', type=int, default=3, help='Data loader workers')
 parser.add_argument('--epochs', type=int, default=100, help='Training epochs')
 parser.add_argument('--crop-size', type=int, default=512, help='Training crop size')
 parser.add_argument('--lr', type=float, default=5e-5, help='Learning rate')
 parser.add_argument('--momentum', type=float, default=0, help='Momentum')
 parser.add_argument('--weight-decay', type=float, default=2e-4, help='Weight decay')
-parser.add_argument('--batch-size', type=int, default=16, help='Batch size')
+parser.add_argument('--batch-size', type=int, default=6, help='Batch size')
 args = parser.parse_args()
 random.seed(args.seed)
 torch.manual_seed(args.seed)
@@ -33,14 +33,13 @@ if not os.path.exists('results'):
 plt.switch_backend('agg')  # Allow plotting when running remotely
 
 
-batch_size = 5
-workers = 1
+
 num_classes = 3
 # Data
 train_dataset = DataLoader.A1().get_train_loader()
 val_dataset = DataLoader.A1().get_validation_loader()
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=workers, pin_memory=True)
-val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=1, num_workers=workers, pin_memory=True)
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
+val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=args.batch_size, num_workers=args.workers, pin_memory=True)
 
 
 # Training/Testing
@@ -55,8 +54,11 @@ checkpoint_iter = 0
 checkpoint_iter_new = 0
 check = os.listdir("checkpoints")
 if len(check):
-    check.sort(key=lambda x: int((x.split('_')[2]).split('.')[0]))
-    net = torch.load("checkpoints/" + check[-1])
+    check.sort(key=lambda x: int((x.split('_')[1]).split('.')[0]))
+    if torch.cuda.is_available():
+      net = torch.load("checkpoints/" + check[-1])
+    else:
+      net = torch.load("checkpoints/" + check[-1], map_location='cpu')
     checkpoint_iter = int(re.findall(r'\d+', check[-1])[0])
     checkpoint_iter_new = checkpoint_iter
     print("Resuming from iteration " + str(checkpoint_iter))
@@ -82,7 +84,7 @@ optimiser = optim.RMSprop(params, lr=args.lr, momentum=args.momentum, weight_dec
 scores, mean_scores = [], []
 #https://github.com/Kaixhin/FCN-semantic-segmentation
 
-def train(e):
+def train(e, checkpoint_iter):
   net.train()
   for i, (input, target) in enumerate(train_loader):
     optimiser.zero_grad()
@@ -92,13 +94,14 @@ def train(e):
       input, target = Variable(input), Variable(target)
     output = net(input)
     loss = crit(output, target)
-    print(e, i + checkpoint_iter, loss.item())
+    print("epoche:", e,"-", i,": total-", i * e + checkpoint_iter, "loss:", loss.item())
     loss.backward()
     optimiser.step()
 
-    if i % 50 == 0:
-      torch.save(net, 'checkpoints/segrest_' + str(i+checkpoint_iter) + '.pt')
-      print("model saved at iteration : " + str(i+checkpoint_iter))
+    checkpoint_iter += 1
+    if e * i % 50 == 0 and i > 0:
+      torch.save(net, 'checkpoints/segrest_' + str(e * i + checkpoint_iter) + '.pt')
+      print("model saved at iteration : " + str(e * i + checkpoint_iter))
 
 
 # Calculates class intersections over unions
@@ -171,5 +174,5 @@ def iou(pred, target):
 
 #test(0)
 for e in range(1, args.epochs + 1):
-  train(e)
+  train(e, checkpoint_iter)
  # test(e)
