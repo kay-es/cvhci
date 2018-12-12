@@ -12,8 +12,8 @@ transform = transforms.Compose([transforms.ToTensor()])
 for i, test in enumerate(test_dir):
     img = cv2.imread(get_path('A1', 'test/' + test), cv2.IMREAD_COLOR).transpose((0, 1, 2))
     img = transform(img)
-    #imgplot = plt.imshow(img.numpy().transpose((1, 2, 0)))
-    #plt.show()
+    # imgplot = plt.imshow(img.numpy().transpose((1, 2, 0)))
+    # plt.show()
 
     input_image = img.unsqueeze(0)
     input_image = input_image.type(torch.FloatTensor)
@@ -26,7 +26,7 @@ for i, test in enumerate(test_dir):
     if torch.cuda.is_available():
         output_image = output_image.cpu()
     output_image = output_image.data.numpy()
-    output_image = output_image.transpose((1,2,0))
+    output_image = output_image.transpose((1, 2, 0))
 
     # Transform to B/W
     processed_output = (output_image > 0.4).astype(float)

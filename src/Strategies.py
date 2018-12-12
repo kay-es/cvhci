@@ -10,6 +10,7 @@ import cv2
 
 from pkg_resources import resource_filename
 
+
 def get_path(task: str, dataset: str, special: str = ""):
     '''
     :param package: the directory to load (e.g. 'A1', 'train' or 'A2', 'test', 'n')
@@ -18,8 +19,9 @@ def get_path(task: str, dataset: str, special: str = ""):
     data = dataset + '/' + special if special != "" else dataset
     return 'resources/' + task + '/data/' + data
 
+
 class Strategy(Dataset):
-    
+
     def __init__(self, transform=transforms.Compose([transforms.ToTensor()])):
         self.transform = transform
 
@@ -34,6 +36,7 @@ class Strategy(Dataset):
 
     def copy(self):
         return copy.deepcopy(self)
+
 
 class A1(Strategy):
 
@@ -73,7 +76,7 @@ class A1(Strategy):
 
         label_name = "mask-" + img_name
         label_path = os.path.join(self.mask_path, label_name)
-        label = cv2.imread(label_path, cv2.IMREAD_COLOR).transpose((0, 1 ,2))
+        label = cv2.imread(label_path, cv2.IMREAD_COLOR).transpose((0, 1, 2))
 
         if self.transform:
             image = self.transform(image)
@@ -81,10 +84,11 @@ class A1(Strategy):
 
         return image, label
 
+
 class A2(Strategy):
 
     def __init__(self, transform=transforms.Compose([transforms.ToTensor(),
-                                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])):
+                                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])):
         super().__init__(transform)
 
     def get_train_loader(self):
@@ -101,10 +105,11 @@ class A2(Strategy):
         iterator = torch.utils.data.DataLoader(dataset, batch_size=64, shuffle=True)
         return iterator
 
+
 class A3(Strategy):
 
     def __init__(self, transform=transforms.Compose([transforms.ToTensor(),
-                                            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])):
+                                                     transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])):
         super().__init__(transform)
 
     def get_train_loader(self):

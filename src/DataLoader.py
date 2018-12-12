@@ -1,5 +1,6 @@
 from Strategies import Strategy, A1, A2
 
+
 class DataLoader:
 
     def __init__(self, strategy):
@@ -25,8 +26,3 @@ class DataLoader:
 
     def get_validation_loader(self):
         return self.loader.get_validation_loader()
-
-
-
-
-
