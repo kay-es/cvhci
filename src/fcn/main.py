@@ -95,14 +95,14 @@ def train(e):
       input, target = Variable(input), Variable(target)
     output = net(input)
     loss = crit(output, target)
-    print("epoche:", e,"-", (i+1),": total-", (i+1) * e + checkpoint_iter, "loss:", loss.item())
+    print("epoche:", e,"-", (i+1),": total-", checkpoint_iter + 1, "loss:", loss.item())
     loss.backward()
     optimiser.step()
 
     checkpoint_iter += 1
     if e * i % 50 == 0 and i > 0:
-      torch.save(net, 'checkpoints/segrest_' + str(e * (i+1) + checkpoint_iter) + '.pt')
-      print("model saved at iteration : " + str(e * (i+1) + checkpoint_iter))
+      torch.save(net, 'checkpoints/segrest_' + str(checkpoint_iter + 1) + '.pt')
+      print("model saved at iteration : " + str(checkpoint_iter + 1))
 
 
 # Calculates class intersections over unions
