@@ -51,7 +51,6 @@ if torch.cuda.is_available():  # use gpu if available
   net.cuda()
 
 checkpoint_iter = 0
-checkpoint_iter_new = 0
 check = os.listdir("checkpoints")
 if len(check):
     check.sort(key=lambda x: int((x.split('_')[1]).split('.')[0]))
@@ -59,8 +58,7 @@ if len(check):
       net = torch.load("checkpoints/" + check[-1])
     else:
       net = torch.load("checkpoints/" + check[-1], map_location='cpu')
-    checkpoint_iter = int(re.findall(r'\d+', check[-1])[0])
-    checkpoint_iter_new = checkpoint_iter
+    checkpoint_iter = int(re.findall(r'\d+', check[-1])[0] + 1)
     print("Resuming from iteration " + str(checkpoint_iter))
 
 #crit = nn.BCELoss()#.cuda()
@@ -95,14 +93,14 @@ def train(e):
       input, target = Variable(input), Variable(target)
     output = net(input)
     loss = crit(output, target)
-    print("epoche:", e,"-", (i+1),": total-", checkpoint_iter + 1, "loss:", loss.item())
+    print("epoche:", e,"-", (i+1),": total-", checkpoint_iter, "loss:", loss.item())
     loss.backward()
     optimiser.step()
 
     checkpoint_iter += 1
-    if e * i % 50 == 0 and i > 0:
-      torch.save(net, 'checkpoints/segrest_' + str(checkpoint_iter + 1) + '.pt')
-      print("model saved at iteration : " + str(checkpoint_iter + 1))
+    if checkpoint_iter % 50 == 0:
+      torch.save(net, 'checkpoints/segrest_' + str(checkpoint_iter ) + '.pt')
+      print("model saved at iteration : " + str(checkpoint_iter))
 
 
 # Calculates class intersections over unions
