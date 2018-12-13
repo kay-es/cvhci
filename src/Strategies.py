@@ -1,3 +1,5 @@
+import random
+
 from torch.utils.data.dataset import Dataset
 import os
 from skimage import io
@@ -22,7 +24,7 @@ def get_path(task: str, dataset: str, special: str = ""):
 
 class Strategy(Dataset):
 
-    def __init__(self, transform=transforms.Compose([transforms.ToTensor()])):
+    def __init__(self, transform=transforms.Compose([transforms.ToTensor(), transforms.RandomCrop, transforms.RandomHorizontalFlip])):
         self.transform = transform
 
     def get_train_loader(self):
@@ -79,8 +81,13 @@ class A1(Strategy):
         label = cv2.imread(label_path, cv2.IMREAD_COLOR).transpose((0, 1, 2))
 
         if self.transform:
+            seed = random.randint(0, 2 ** 32)
+            random.seed(seed)
             image = self.transform(image)
+            random.seed(seed)
             label = self.transform(label)
+            normalize = transforms.Normalize((0.24853915,0.266838,0.2138273), (0.16978161, 0.16967748, 0.13661802))
+            image = normalize(image)
 
         return image, label
 

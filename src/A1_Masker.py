@@ -7,8 +7,11 @@ from Strategies import get_path
 import matplotlib.pyplot as plt
 
 test_dir = os.listdir(get_path('A1', 'test'))
-model = torch.load("output/a1/checkpoints/segrest_1350.pt", map_location='cpu')
+model_name = "SegResNet_2400"
+model = torch.load("output/a1/checkpoints/" + model_name + ".pt", map_location='cpu')
 transform = transforms.Compose([transforms.ToTensor()])
+if not os.path.exists('output/a1/processed/' + model_name):
+    os.makedirs('output/a1/processed/' + model_name)
 for i, test in enumerate(test_dir):
     img = cv2.imread(get_path('A1', 'test/' + test), cv2.IMREAD_COLOR).transpose((0, 1, 2))
     img = transform(img)
@@ -34,6 +37,4 @@ for i, test in enumerate(test_dir):
     # plt.show()
     print(i, "of", len(test_dir) - 1, test)
 
-    if not os.path.exists('output/a1/processed'):
-        os.makedirs('output/a1/processed')
-    plt.imsave("output/a1/processed/out-" + test, processed_output)
+    plt.imsave("output/a1/processed/" + model_name + "out-" + test, processed_output)
