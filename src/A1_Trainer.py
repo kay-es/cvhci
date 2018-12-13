@@ -77,7 +77,7 @@ if torch.cuda.is_available():
     crit.cuda()
 optim = optim.RMSprop(params, lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
 scores, mean_scores = [], []
-
+scheduler = torch.optim.lr_scheduler.StepLR(optim, gamma=0.1, step_size=3)
 
 def train(e):
     net.train()
@@ -103,3 +103,4 @@ def train(e):
 
 for e in range(1, args.epochs + 1):
     train(e)
+    scheduler.step()
