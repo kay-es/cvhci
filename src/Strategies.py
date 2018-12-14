@@ -7,6 +7,7 @@ import copy
 import torchvision
 import torch
 from torchvision import transforms
+import PIL
 
 import cv2
 
@@ -24,7 +25,7 @@ def get_path(task: str, dataset: str, special: str = ""):
 
 class Strategy(Dataset):
 
-    def __init__(self, transform=transforms.Compose([transforms.ToTensor(), transforms.RandomCrop, transforms.RandomHorizontalFlip])):
+    def __init__(self, transform=transforms.Compose([transforms.ToTensor()])):
         self.transform = transform
 
     def get_train_loader(self):
@@ -42,7 +43,8 @@ class Strategy(Dataset):
 
 class A1(Strategy):
 
-    def __init__(self, transform=transforms.Compose([transforms.ToTensor()])):
+    def __init__(self, transform=transforms.Compose([transforms.Resize(256),
+        transforms.CenterCrop(256), transforms.RandomHorizontalFlip(), transforms.ToTensor()])):
         super().__init__(transform)
         self.img_path = None
         self.mask_path = None
@@ -74,11 +76,13 @@ class A1(Strategy):
     def __getitem__(self, idx):
         img_name = self.data[idx]
         im_path = os.path.join(self.img_path, img_name)
-        image = cv2.imread(im_path, cv2.IMREAD_COLOR).transpose((0, 1, 2))
+        image = PIL.Image.open(im_path).convert('RGB')
+        #image = cv2.imread(im_path, cv2.IMREAD_COLOR).transpose((0, 1, 2))
 
         label_name = "mask-" + img_name
         label_path = os.path.join(self.mask_path, label_name)
-        label = cv2.imread(label_path, cv2.IMREAD_COLOR).transpose((0, 1, 2))
+        #label = cv2.imread(label_path, cv2.IMREAD_COLOR).transpose((0, 1, 2))
+        label = PIL.Image.open(label_path).convert('RGB')
 
         if self.transform:
             seed = random.randint(0, 2 ** 32)
@@ -86,8 +90,8 @@ class A1(Strategy):
             image = self.transform(image)
             random.seed(seed)
             label = self.transform(label)
-            #normalize = transforms.Normalize((0.24853915,0.266838,0.2138273), (0.16978161, 0.16967748, 0.13661802))
-            #image = normalize(image)
+            normalize = transforms.Normalize([0.0, 0.0, 0.0], [0.729, 0.724, 0.725])
+            image = normalize(image)
 
         return image, label
 
