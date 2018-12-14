@@ -84,12 +84,6 @@ def train(e):
     net.train()
     global checkpoint_iter
     for i, (input, target) in enumerate(train_loader):
-        implot = input.squeeze()
-        implot = implot.numpy().transpose((1, 2, 0))
-        imgplot = plt.imshow(implot)
-        plt.show()
-        imgplot = plt.imshow(target.unsqueeze(0).numpy().transpose((1, 2, 0)))
-        plt.show()
         optim.zero_grad()
         if torch.cuda.is_available():
             input, target = Variable(input.cuda()), Variable(target.cuda())  # .cuda(param irgendwas)
