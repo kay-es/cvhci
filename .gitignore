@@ -93,3 +93,4 @@ fabric.properties
 __pycache__/
 
 src/main/tasks/runs/
+src/output/*
