@@ -43,8 +43,7 @@ class Strategy(Dataset):
 
 class A1(Strategy):
 
-    def __init__(self, transform=transforms.Compose([transforms.Resize(256),
-        transforms.CenterCrop(256), transforms.RandomHorizontalFlip(), transforms.ToTensor()])):
+    def __init__(self, transform=transforms.Compose([transforms.RandomHorizontalFlip(), transforms.ToTensor()])):
         super().__init__(transform)
         self.img_path = None
         self.mask_path = None
