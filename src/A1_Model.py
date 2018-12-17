@@ -71,10 +71,15 @@ class SegResNet(nn.Module):
 
     def forward(self, x):
         x1, x2, x3, x4, x5 = self.pretrained_net(x)
-        x = self.relu(self.bn5(self.conv5(x5)))
-        x = self.relu(self.bn6(self.conv6(x + x4)))
-        x = self.relu(self.bn7(self.conv7(x + x3)))
-        x = self.relu(self.bn8(self.conv8(x + x2)))
-        x = self.relu(self.bn9(self.conv9(x + x1)))
+        #x = self.relu(self.bn5(self.conv5(x5)))
+        #x = self.relu(self.bn6(self.conv6(x + x4)))
+        #x = self.relu(self.bn7(self.conv7(x + x3)))
+        #x = self.relu(self.bn8(self.conv8(x + x2)))
+        #x = self.relu(self.bn9(self.conv9(x + x1)))
+        x = self.relu(self.conv5(x5))
+        x = self.relu(self.conv6(x + x4))
+        x = self.relu(self.conv7(x + x3))
+        x = self.relu(self.conv8(x + x2))
+        x = self.relu(self.conv9(x + x1))
         x = self.sigmoid(self.conv10(x))
         return x
