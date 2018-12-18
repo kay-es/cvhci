@@ -9,7 +9,7 @@ from torchvision import models
 import re
 from DataLoader import DataLoader
 from A1_Model import FeatureResNet, SegResNet
-from A1_FCN import FCN8s
+#from A1_FCN import FCN8s
 import matplotlib.pyplot as plt
 
 # Setup
