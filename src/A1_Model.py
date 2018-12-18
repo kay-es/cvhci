@@ -55,7 +55,7 @@ class SegResNet(nn.Module):
         super().__init__()
         self.pretrained_net = pretrained_net
         self.relu = nn.ReLU(inplace=True)
-        self.sigmoid = nn.Sigmoid()
+        self.sigmoid = nn.Softmax(dim=2)
         self.conv5 = conv(512, 256, stride=2, transposed=True)
         #self.bn5 = bn(256)
         self.conv6 = conv(256, 128, stride=2, transposed=True)
@@ -81,5 +81,6 @@ class SegResNet(nn.Module):
         x = self.relu(self.conv7(x + x3))
         x = self.relu(self.conv8(x + x2))
         x = self.relu(self.conv9(x + x1))
+
         x = self.sigmoid(self.conv10(x))
         return x

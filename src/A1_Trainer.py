@@ -9,6 +9,7 @@ from torchvision import models
 import re
 from DataLoader import DataLoader
 from A1_Model import FeatureResNet, SegResNet
+from A1_FCN import FCN8s
 import matplotlib.pyplot as plt
 
 # Setup
@@ -42,6 +43,8 @@ pretrained_net.load_state_dict(models.resnet34(pretrained=True).state_dict())
 
 num_classes = 3
 net = SegResNet(num_classes, pretrained_net)  # cuda
+#net = FCN8s(2)
+
 if torch.cuda.is_available():  # use gpu if available
     net.cuda()
 
@@ -73,6 +76,7 @@ for key, value in params_dict.items():
         params += [{'params': [value]}]
 
 # Define Hyperparams
+#crit = nn.BCELoss()
 crit = nn.BCELoss()
 if torch.cuda.is_available():
     crit.cuda()
