@@ -141,8 +141,8 @@ def train(e, train_loader, valid_loader):
 
             y_p = outputs.view(6, -1)
             y_t = target.view(6, -1)
-            y_p = np.array(y_p.cpu().data) > 0.3
-            y_t = np.array(y_t.cpu().data) > 0.3
+            y_p = np.array(y_p.cpu().data) > 0.5
+            y_t = np.array(y_t.cpu().data) > 0.5
 
             f1 = f1_score(y_t, y_p, average="samples")
             running_corrects += f1
