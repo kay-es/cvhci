@@ -70,8 +70,21 @@ if len(check):
 crit = nn.BCELoss()
 if torch.cuda.is_available():
     crit.cuda()
-optim = optim.Adam(net.parameters(), lr=args.lr)
 
+# For RMSProp
+params_dict = dict(net.named_parameters())
+params = []
+for key, value in params_dict.items():
+    if 'bn' in key:
+        # No weight decay on batch norm
+        params += [{'params': [value], 'weight_decay': 0}]
+    elif '.bias' in key:
+        # No weight decay plus double learning rate on biases
+        params += [{'params': [value], 'lr': 2 * args.lr, 'weight_decay': 0}]
+    else:
+        params += [{'params': [value]}]
+
+optim = optim.Adam(params, lr=args.lr)
 
 
 
