@@ -136,7 +136,9 @@ def train(e, train_loader, valid_loader):
 
             # statistics
             running_loss += loss.item()
-            print('F1: {}'.format(f1_score(target.cpu().detach().numpy(), outputs.cpu().detach().numpy() > 0.3, average="samples")))
+            f1_target = target.cpu().detach().numpy()
+            f1_output = outputs.cpu().detach().numpy() > 0.3
+            print('F1: {}'.format(f1_score(f1_target, f1_target, average="samples")))
             #running_corrects += torch.sum(preds == target.data)
 
         epoch_loss = running_loss / len(loaders[phase])
