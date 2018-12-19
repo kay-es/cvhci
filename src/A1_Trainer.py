@@ -77,7 +77,7 @@ optim = optim.Adam(net.parameters(), lr=args.lr)
 
 since = time.time()
 best_model_wts = copy.deepcopy(net.state_dict())
-best_acc = 0.0
+best_loss = 1.0
 
 
 # TRAIN METHOD
@@ -85,7 +85,7 @@ def train(e, train_loader, valid_loader):
     loaders = dict({'train': train_loader, 'val': valid_loader})
     global checkpoint_iter
     global best_model_wts
-    global best_acc
+    global best_loss
 
     for phase in ['train', 'val']:
         if phase == 'train':
@@ -104,7 +104,7 @@ def train(e, train_loader, valid_loader):
             # track history if only in train
             with torch.set_grad_enabled(phase == 'train'):
                 outputs = net(input)
-                _, preds = torch.max(outputs, 1)
+                #_, preds = torch.max(outputs)
                 loss = crit(outputs, target)
 
                 # backward + optimize only if in training phase
@@ -121,17 +121,17 @@ def train(e, train_loader, valid_loader):
 
             # statistics
             running_loss += loss.item() * input.size(0)
-            running_corrects += torch.sum(preds == target.data)
+            #running_corrects += torch.sum(preds == target.data)
 
         epoch_loss = running_loss / len(loaders[phase])
-        epoch_acc = running_corrects / len(loaders[phase])
+        #epoch_acc = running_corrects / len(loaders[phase])
 
         print('{} Loss: {:.4f} Acc: {:.4f}'.format(
-            phase, epoch_loss, epoch_acc))
+            phase, epoch_loss, 0.0))
 
         # deep copy the model
-        if phase == 'val' and epoch_acc > best_acc:
-            best_acc = epoch_acc
+        if phase == 'val' and epoch_loss < best_loss:
+            best_loss = epoch_loss
             best_model_wts = copy.deepcopy(net.state_dict())
 
     print()
@@ -153,7 +153,7 @@ for epoch in range(args.epochs):
 time_elapsed = time.time() - since
 print('Training complete in {:.0f}m {:.0f}s'.format(
     time_elapsed // 60, time_elapsed % 60))
-print('Best val Acc: {:4f}'.format(best_acc))
+print('Best val loss: {:4f}'.format(best_loss))
 
 # load best model weights
 net.load_state_dict(best_model_wts)
