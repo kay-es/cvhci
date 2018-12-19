@@ -150,15 +150,15 @@ def train(e, train_loader, valid_loader):
 
 
 
-train_set, valid_set = cv_splitter.get_train_valid_split()
-train_loader  = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
-valid_loader = torch.utils.data.DataLoader(valid_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
-
 # TRAIN
 for epoch in range(args.epochs):
     print('Epoch {}/{}'.format(epoch, args.epochs - 1))
     print('-' * 10)
-
+    train_set, valid_set = cv_splitter.get_train_valid_split()
+    train_loader = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True,
+                                               num_workers=args.workers, pin_memory=True)
+    valid_loader = torch.utils.data.DataLoader(valid_set, batch_size=args.batch_size, shuffle=True,
+                                               num_workers=args.workers, pin_memory=True)
     train(epoch, train_loader, valid_loader)
     net.load_state_dict(best_model_wts)
 
