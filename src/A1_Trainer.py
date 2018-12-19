@@ -112,7 +112,10 @@ def train(e, train_loader, valid_loader):
         for i, (input, target) in enumerate(loaders[phase]):
             optim.zero_grad()
 
-            input, target = input.to(device), target.to(device)
+            if torch.cuda.is_available():
+                input, target = Variable(input.cuda()), Variable(target.cuda())  # .cuda(param irgendwas)
+            else:
+                input, target = Variable(input), Variable(target)
             # forward
             # track history if only in train
             with torch.set_grad_enabled(phase == 'train'):
