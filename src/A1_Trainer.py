@@ -82,8 +82,6 @@ best_acc = 0.0
 
 # TRAIN METHOD
 def train(e, train_loader, valid_loader):
-    print("LEN TRAIN:", len(train_loader))
-    print("LEN VALID:", len(valid_loader))
     loaders = dict({'train': train_loader, 'val': valid_loader})
     global checkpoint_iter
     global best_model_wts
@@ -121,6 +119,9 @@ def train(e, train_loader, valid_loader):
             #if checkpoint_iter % 50 == 0:
              #   torch.save(net, 'output/a1/checkpoints/SegResNet_' + str(checkpoint_iter) + '.pt')
 
+            # statistics
+            running_loss += loss.item() * input.size(0)
+            running_corrects += torch.sum(preds == target.data)
 
         epoch_loss = running_loss / len(loaders[phase])
         epoch_acc = running_corrects / len(loaders[phase])
