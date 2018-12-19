@@ -119,10 +119,10 @@ def train(e, train_loader, valid_loader):
 
             # forward
             # track history if only in train
-            #with torch.set_grad_enabled(phase == 'train'):
-            outputs = net(input)
-            #_, preds = torch.max(outputs)
-            loss = crit(outputs, target)
+            with torch.set_grad_enabled(phase == 'train'):
+                outputs = net(input)
+                #_, preds = torch.max(outputs)
+                loss = crit(outputs, target)
 
             # backward + optimize only if in training phase
             if phase == 'train':
