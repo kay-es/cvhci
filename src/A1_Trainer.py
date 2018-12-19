@@ -151,7 +151,7 @@ def train(e, train_loader, valid_loader):
         epoch_f1 = running_corrects / len(loaders[phase])
 
         print('{} \tLoss: {:.4f} F1: {:.4f}'.format(
-            phase, epoch_loss, 0.0))
+            phase, epoch_loss, epoch_f1))
 
         # deep copy the model
         if phase == 'val' and epoch_f1 > best_f1:
