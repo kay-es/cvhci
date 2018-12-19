@@ -124,9 +124,9 @@ def train(e, train_loader, valid_loader):
             loss = crit(outputs, target)
 
             # backward + optimize only if in training phase
-            if phase == 'train':
-                loss.backward()
-                optim.step()
+            #if phase == 'train':
+             #   loss.backward()
+              #  optim.step()
 
             # OUTPUT ONLY
             checkpoint_iter += 1
@@ -141,8 +141,9 @@ def train(e, train_loader, valid_loader):
             #f1_output = outputs.cpu().detach() #.detach().numpy() > 0.3
             #print('F1: {}'.format()
 
-            pred = np.argmax(outputs.cpu().data.numpy(), axis=1)
-            print(f1_score(pred, pred, average="samples"))
+            y_p = np.argmax(outputs.cpu().data.numpy(), axis=1)
+            y_t = np.argmax(target.cpu().data.numpy(), axis=1)
+            print(f1_score(y_t, y_p, average="samples"))
             #running_corrects += torch.sum(preds == target.data)
 
         epoch_loss = running_loss / len(loaders[phase])
