@@ -112,7 +112,7 @@ def train(e, train_loader, valid_loader):
 
 
         epoch_loss = running_loss / len(loaders[phase])
-        epoch_acc = running_corrects.double() / len(loaders[phase])
+        epoch_acc = running_corrects / len(loaders[phase])
 
         print('{} Loss: {:.4f} Acc: {:.4f}'.format(
             phase, epoch_loss, epoch_acc))
