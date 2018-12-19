@@ -112,21 +112,18 @@ def train(e, train_loader, valid_loader):
         for i, (input, target) in enumerate(loaders[phase]):
             optim.zero_grad()
 
-            if torch.cuda.is_available():
-                input, target = Variable(input.cuda()), Variable(target.cuda())  # .cuda(param irgendwas)
-            else:
-                input, target = Variable(input), Variable(target)
+            input, target = input.to(device), target.to(device)
             # forward
             # track history if only in train
-            with torch.set_grad_enabled(phase == 'train'):
-                outputs = net(input)
-                #_, preds = torch.max(outputs)
-                loss = crit(outputs, target)
+            #with torch.set_grad_enabled(phase == 'train'):
+            outputs = net(input)
+            #_, preds = torch.max(outputs)
+            loss = crit(outputs, target)
 
-                # backward + optimize only if in training phase
-                if phase == 'train':
-                    loss.backward()
-                    optim.step()
+            # backward + optimize only if in training phase
+            if phase == 'train':
+                loss.backward()
+                optim.step()
 
             # OUTPUT ONLY
             checkpoint_iter += 1
