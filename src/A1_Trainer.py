@@ -76,12 +76,8 @@ optim = optim.Adam(net.parameters(), lr=args.lr)
 
 
 since = time.time()
-
 best_model_wts = copy.deepcopy(net.state_dict())
 best_acc = 0.0
-
-
-
 
 
 # TRAIN METHOD
@@ -90,6 +86,8 @@ def train(e, train_loader, valid_loader):
     print("LEN VALID:", len(valid_loader))
     loaders = dict({'train': train_loader, 'val': valid_loader})
     global checkpoint_iter
+    global best_model_wts
+    global best_acc
 
     for phase in ['train', 'val']:
         if phase == 'train':
