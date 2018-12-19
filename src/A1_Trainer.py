@@ -10,6 +10,7 @@ import re
 from DataLoader import DataLoader, CVSplit
 from A1_Model import FeatureResNet, SegResNet
 import copy
+import time
 #from A1_FCN import FCN8s
 import matplotlib.pyplot as plt
 
@@ -107,8 +108,8 @@ def train(e, train_loader, valid_loader):
             checkpoint_iter += 1
             #if i == 0:
              #   print(f'Epoche: {e}-{(i+1)} - Total: {checkpoint_iter} - Loss: {loss.item()}')
-            if checkpoint_iter % 50 == 0:
-                torch.save(net, 'output/a1/checkpoints/SegResNet_' + str(checkpoint_iter) + '.pt')
+            #if checkpoint_iter % 50 == 0:
+             #   torch.save(net, 'output/a1/checkpoints/SegResNet_' + str(checkpoint_iter) + '.pt')
 
 
         epoch_loss = running_loss / len(loaders[phase])
@@ -126,6 +127,11 @@ def train(e, train_loader, valid_loader):
 
 
 
+since = time.time()
+
+best_model_wts = copy.deepcopy(net.state_dict())
+best_acc = 0.0
+
 # TRAIN
 for epoch in range(args.epochs):
     print('Epoch {}/{}'.format(epoch, args.epochs - 1))
@@ -135,3 +141,13 @@ for epoch in range(args.epochs):
     train_loader  = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
     valid_loader = torch.utils.data.DataLoader(valid_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
     train(epoch, train_loader, valid_loader)
+
+
+time_elapsed = time.time() - since
+print('Training complete in {:.0f}m {:.0f}s'.format(
+    time_elapsed // 60, time_elapsed % 60))
+print('Best val Acc: {:4f}'.format(best_acc))
+
+# load best model weights
+net.load_state_dict(best_model_wts)
+torch.save(net, 'output/a1/checkpoints/SegResNet_' + str(time.time()) + '.pt')
