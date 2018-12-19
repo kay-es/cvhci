@@ -23,7 +23,7 @@ parser.add_argument('--seed', type=int, default=42, help='Random seed')
 parser.add_argument('--workers', type=int, default=3, help='Data loader workers')
 parser.add_argument('--epochs', type=int, default=100, help='Training epochs')
 parser.add_argument('--crop-size', type=int, default=512, help='Training crop size')
-parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
+parser.add_argument('--lr', type=float, default=5e-4, help='Learning rate')
 parser.add_argument('--momentum', type=float, default=0.2, help='Momentum')
 parser.add_argument('--weight-decay', type=float, default=2e-4, help='Weight decay')
 parser.add_argument('--batch-size', type=int, default=6, help='Batch size')
@@ -88,7 +88,7 @@ for key, value in params_dict.items():
     else:
         params += [{'params': [value]}]
 
-optim = optim.Adam(params, lr=args.lr)
+optim = optim.Adam(net.parameters(), lr=args.lr)
 
 
 
