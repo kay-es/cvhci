@@ -72,6 +72,18 @@ if torch.cuda.is_available():
     crit.cuda()
 optim = optim.Adam(net.parameters(), lr=args.lr)
 
+
+
+
+since = time.time()
+
+best_model_wts = copy.deepcopy(net.state_dict())
+best_acc = 0.0
+
+
+
+
+
 # TRAIN METHOD
 def train(e, train_loader, valid_loader):
     print("LEN TRAIN:", len(train_loader))
@@ -127,10 +139,6 @@ def train(e, train_loader, valid_loader):
 
 
 
-since = time.time()
-
-best_model_wts = copy.deepcopy(net.state_dict())
-best_acc = 0.0
 
 # TRAIN
 for epoch in range(args.epochs):
