@@ -23,7 +23,7 @@ parser.add_argument('--crop-size', type=int, default=512, help='Training crop si
 parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
 parser.add_argument('--momentum', type=float, default=0.2, help='Momentum')
 parser.add_argument('--weight-decay', type=float, default=2e-4, help='Weight decay')
-parser.add_argument('--batch-size', type=int, default=4, help='Batch size')
+parser.add_argument('--batch-size', type=int, default=6, help='Batch size')
 
 args = parser.parse_args()
 random.seed(args.seed)
@@ -40,7 +40,7 @@ train_dataset = DataLoader.A1().get_train_loader()
 #                                         pin_memory=True)
 
 
-cv_splitter = CVSplit(train_dataset, 0.1)
+cv_splitter = CVSplit(train_dataset, 0.15)
 
 # Training/Testing
 pretrained_net = FeatureResNet()
