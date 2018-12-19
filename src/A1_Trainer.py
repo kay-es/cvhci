@@ -133,7 +133,7 @@ def train(e, train_loader, valid_loader):
              #   torch.save(net, 'output/a1/checkpoints/SegResNet_' + str(checkpoint_iter) + '.pt')
 
             # statistics
-            running_loss += loss.item() * input.size(0)
+            running_loss += loss.item()
             #running_corrects += torch.sum(preds == target.data)
 
         epoch_loss = running_loss / len(loaders[phase])
