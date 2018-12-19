@@ -89,8 +89,8 @@ class A1(Strategy):
             image = self.transform(image)
             random.seed(seed)
             label = self.transform(label)
-            normalize = transforms.Normalize([0.0, 0.0, 0.0], [0.729, 0.724, 0.725])
-            image = normalize(image)
+            #normalize = transforms.Normalize([0.0, 0.0, 0.0], [0.729, 0.724, 0.725])
+            #image = normalize(image)
 
         return image, label
 
