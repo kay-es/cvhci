@@ -88,7 +88,7 @@ for key, value in params_dict.items():
     else:
         params += [{'params': [value]}]
 
-optim = optim.Adam(net.parameters(), lr=args.lr)
+optim = optim.Adam(params, lr=args.lr)
 
 
 
