@@ -161,7 +161,7 @@ for epoch in range(args.epochs):
     train_loader  = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
     valid_loader = torch.utils.data.DataLoader(valid_set, batch_size=args.batch_size, shuffle=True, num_workers=args.workers, pin_memory=True)
     train(epoch, train_loader, valid_loader)
-
+    net.load_state_dict(best_model_wts)
 
 time_elapsed = time.time() - since
 print('Training complete in {:.0f}m {:.0f}s'.format(
@@ -169,5 +169,5 @@ print('Training complete in {:.0f}m {:.0f}s'.format(
 print('Best val loss: {:4f}'.format(best_loss))
 
 # load best model weights
-net.load_state_dict(best_model_wts)
+
 torch.save(net, 'output/a1/checkpoints/SegResNet_' + str(time.time()) + '.pt')
