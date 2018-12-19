@@ -36,11 +36,11 @@ torch.manual_seed(args.seed)
 
 # Data
 train_dataset = DataLoader.A1().get_train_loader()
-#val_dataset = DataLoader.A1().get_validation_loader()
-#train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
-#                                           num_workers=args.workers, pin_memory=True)
-#val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=args.batch_size, num_workers=args.workers,
-#                                         pin_memory=True)
+valid_dataset = DataLoader.A1().get_validation_loader()
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
+                                             num_workers=args.workers, pin_memory=True)
+valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_size, num_workers=args.workers,
+                                         pin_memory=True)
 
 
 cv_splitter = CVSplit(train_dataset, 0.15)
@@ -75,22 +75,7 @@ crit = nn.BCELoss()
 if torch.cuda.is_available():
     crit.cuda()
 
-# For RMSProp
-params_dict = dict(net.named_parameters())
-params = []
-for key, value in params_dict.items():
-    if 'bn' in key:
-        # No weight decay on batch norm
-        params += [{'params': [value], 'weight_decay': 0}]
-    elif '.bias' in key:
-        # No weight decay plus double learning rate on biases
-        params += [{'params': [value], 'lr': 2 * args.lr, 'weight_decay': 0}]
-    else:
-        params += [{'params': [value]}]
-
 optim = optim.Adam(net.parameters(), lr=args.lr)
-
-
 
 since = time.time()
 best_model_wts = copy.deepcopy(net.state_dict())
@@ -162,11 +147,11 @@ def train(e, train_loader, valid_loader):
 
 
 
-train_set, valid_set = cv_splitter.get_train_valid_split()
-train_loader = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True,
-                                           num_workers=args.workers, pin_memory=True)
-valid_loader = torch.utils.data.DataLoader(valid_set, batch_size=args.batch_size, shuffle=True,
-                                           num_workers=args.workers, pin_memory=True)
+#train_set, valid_set = cv_splitter.get_train_valid_split()
+#train_loader = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=True,
+#                                           num_workers=args.workers, pin_memory=True)
+#valid_loader = torch.utils.data.DataLoader(valid_set, batch_size=args.batch_size, shuffle=True,
+#                                           num_workers=args.workers, pin_memory=True)
 
 # TRAIN
 for epoch in range(args.epochs):

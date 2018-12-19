@@ -64,6 +64,11 @@ class A1(Strategy):
         validation_loader.__set_dataset__('validation')
         return validation_loader
 
+    def get_trainval_loader(self):
+        validation_loader = self.copy()
+        validation_loader.__set_dataset__('trainval')
+        return validation_loader
+
     def __set_dataset__(self, dataset):
         self.img_path = get_path('A1', dataset + '/img')
         self.mask_path = get_path('A1', dataset + '/mask')
