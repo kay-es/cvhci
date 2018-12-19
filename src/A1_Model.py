@@ -57,9 +57,6 @@ class SegResNet(nn.Module):
         self.relu = nn.ReLU(inplace=True)
         self.sigmoid = nn.Sigmoid()
 
-        self.conv11 = conv(512, 1024, stride=2, transposed=False)
-        self.conv12 = conv(1024, 512, stride=2, transposed=True)
-
         self.conv5 = conv(512, 256, stride=2, transposed=True)
         #self.bn5 = bn(256)
         self.conv6 = conv(256, 128, stride=2, transposed=True)
