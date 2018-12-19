@@ -11,6 +11,8 @@ from DataLoader import DataLoader, CVSplit
 from A1_Model import FeatureResNet, SegResNet
 import copy
 import time
+from sklearn.metrics import f1_score
+
 #from A1_FCN import FCN8s
 import matplotlib.pyplot as plt
 
@@ -134,6 +136,7 @@ def train(e, train_loader, valid_loader):
 
             # statistics
             running_loss += loss.item()
+            print('F1: {}'.format(f1_score(target, (outputs > 0.3).astype(float), average="samples")))
             #running_corrects += torch.sum(preds == target.data)
 
         epoch_loss = running_loss / len(loaders[phase])
