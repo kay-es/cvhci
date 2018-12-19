@@ -94,7 +94,7 @@ optim = optim.Adam(net.parameters(), lr=args.lr)
 
 since = time.time()
 best_model_wts = copy.deepcopy(net.state_dict())
-best_loss = 1.0
+best_f1 = 0.0
 
 
 # TRAIN METHOD
@@ -102,7 +102,7 @@ def train(e, train_loader, valid_loader):
     loaders = dict({'train': train_loader, 'val': valid_loader})
     global checkpoint_iter
     global best_model_wts
-    global best_loss
+    global best_f1
 
     for phase in ['train', 'val']:
         if phase == 'train':
@@ -138,28 +138,24 @@ def train(e, train_loader, valid_loader):
 
             # statistics
             running_loss += loss.item()
-            #f1_target = target.cpu().detach()
-            #f1_output = outputs.cpu().detach() #.detach().numpy() > 0.3
-            #print('F1: {}'.format()
 
             y_p = outputs.view(6, -1)
             y_t = target.view(6, -1)
-
             y_p = np.array(y_p.cpu().data) > 0.3
             y_t = np.array(y_t.cpu().data) > 0.3
 
-            print('F1: {}'.format(f1_score(y_t, y_p, average="samples")))
-            #running_corrects += torch.sum(preds == target.data)
+            f1 = f1_score(y_t, y_p, average="samples")
+            running_corrects += f1
 
         epoch_loss = running_loss / len(loaders[phase])
-        #epoch_acc = running_corrects / len(loaders[phase])
+        epoch_f1 = running_corrects / len(loaders[phase])
 
-        print('{} Loss: {:.4f} Acc: {:.4f}'.format(
+        print('{} \tLoss: {:.4f} F1: {:.4f}'.format(
             phase, epoch_loss, 0.0))
 
         # deep copy the model
-        if phase == 'val' and epoch_loss < best_loss:
-            best_loss = epoch_loss
+        if phase == 'val' and epoch_f1 > best_f1:
+            best_f1 = epoch_f1
             best_model_wts = copy.deepcopy(net.state_dict())
 
     print()
