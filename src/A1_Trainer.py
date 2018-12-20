@@ -13,6 +13,7 @@ import copy
 import time
 from sklearn.metrics import f1_score
 import numpy as np
+from A1_PSP import PSPNet
 
 #from A1_FCN import FCN8s
 import matplotlib.pyplot as plt
@@ -46,10 +47,11 @@ valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_
 cv_splitter = CVSplit(train_dataset, 0.15)
 
 # Training/Testing
-pretrained_net = FeatureResNet()
-pretrained_net.load_state_dict(models.resnet34(pretrained=True).state_dict())
+#pretrained_net = FeatureResNet()
+#pretrained_net.load_state_dict(models.resnet34(pretrained=True).state_dict())
 num_classes = 3 #RGB?
-net = SegResNet(num_classes, pretrained_net)
+#net = SegResNet(num_classes, pretrained_net)
+net = PSPNet(num_classes)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 #if torch.cuda.is_available():  # use gpu if available
