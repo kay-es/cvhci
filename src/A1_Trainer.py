@@ -167,4 +167,4 @@ print('Best val F1: {:4f}'.format(best_f1))
 
 # load best model weights
 
-torch.save(net, 'output/a1/checkpoints/SegResNet_' + str(time.time()) + '.pt')
+torch.save(net, 'output/a1/checkpoints/SegResNet_' + str(checkpoint_iter) + "." + str(time.time()) + '.pt')
