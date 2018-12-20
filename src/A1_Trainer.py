@@ -27,7 +27,7 @@ parser.add_argument('--crop-size', type=int, default=512, help='Training crop si
 parser.add_argument('--lr', type=float, default=5e-4, help='Learning rate')
 parser.add_argument('--momentum', type=float, default=0.2, help='Momentum')
 parser.add_argument('--weight-decay', type=float, default=2e-4, help='Weight decay')
-parser.add_argument('--batch-size', type=int, default=1, help='Batch size')
+parser.add_argument('--batch-size', type=int, default=2, help='Batch size')
 
 args = parser.parse_args()
 random.seed(args.seed)
