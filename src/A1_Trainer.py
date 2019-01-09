@@ -148,7 +148,6 @@ def train(e, train_loader, valid_loader):
             running_loss += loss.item()
 
             outputs = sigmoid(outputs)
-            target = sigmoid(target)
             y_p = outputs.view(6, -1)
             y_t = target.view(6, -1)
             y_p = np.array(y_p.cpu().data) > 0.33
