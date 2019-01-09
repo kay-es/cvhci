@@ -8,6 +8,7 @@ from torch.autograd import Variable
 from torchvision import models
 import re
 from DataLoader import DataLoader, CVSplit
+from A1_UNET import UNet
 #from A1_Model import FeatureResNet, SegResNet
 from A1_ModelShallow import FeatureResNet, SegResNet
 #from A1_ModelDeeper import FeatureResNet, SegResNet
@@ -52,9 +53,10 @@ cv_splitter = CVSplit(train_dataset, 0.15)
 
 # Training/Testing
 pretrained_net = FeatureResNet()
-pretrained_net.load_state_dict(models.resnet18(pretrained=True).state_dict())
+#pretrained_net.load_state_dict(models.resnet18(pretrained=True).state_dict())
 num_classes = 3 #RGB?
-net = SegResNet(num_classes, pretrained_net)
+#net = SegResNet(num_classes, pretrained_net)
+net = UNet(num_classes)
 #net = PSPNet(num_classes)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
