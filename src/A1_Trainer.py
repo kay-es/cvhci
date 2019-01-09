@@ -8,7 +8,8 @@ from torch.autograd import Variable
 from torchvision import models
 import re
 from DataLoader import DataLoader, CVSplit
-from A1_Model import FeatureResNet, SegResNet
+#from A1_Model import FeatureResNet, SegResNet
+from A1_ModelDeeper import FeatureResNet, SegResNet
 import copy
 import time
 from sklearn.metrics import f1_score
@@ -38,20 +39,20 @@ torch.manual_seed(args.seed)
 # Data
 train_dataset = DataLoader.A1().get_train_loader()
 valid_dataset = DataLoader.A1().get_validation_loader()
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=7, shuffle=True,
                                              num_workers=args.workers, pin_memory=True)
-valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_size, num_workers=args.workers,
+valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=1, num_workers=args.workers,
                                          pin_memory=True)
 
 
 cv_splitter = CVSplit(train_dataset, 0.15)
 
 # Training/Testing
-#pretrained_net = FeatureResNet()
-#pretrained_net.load_state_dict(models.resnet34(pretrained=True).state_dict())
+pretrained_net = FeatureResNet()
+pretrained_net.load_state_dict(models.resnet50(pretrained=True).state_dict())
 num_classes = 3 #RGB?
-#net = SegResNet(num_classes, pretrained_net)
-net = PSPNet(num_classes)
+net = SegResNet(num_classes, pretrained_net)
+#net = PSPNet(num_classes)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 #if torch.cuda.is_available():  # use gpu if available
