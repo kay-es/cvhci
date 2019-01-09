@@ -76,7 +76,7 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 #if torch.cuda.is_available():  # use gpu if available
 #    net.cuda()
 net.to(device)
-
+sigmoid = nn.Sigmoid()
 # Load current state of model
 checkpoint_iter = 0
 if not os.path.exists('output/a1/checkpoints'):
@@ -147,8 +147,8 @@ def train(e, train_loader, valid_loader):
             # statistics
             running_loss += loss.item()
 
-            outputs = nn.Sigmoid(outputs)
-            target = nn.Sigmoid(target)
+            outputs = sigmoid(outputs)
+            target = sigmoid(target)
             y_p = outputs.view(6, -1)
             y_t = target.view(6, -1)
             y_p = np.array(y_p.cpu().data) > 0.33
