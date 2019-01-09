@@ -33,6 +33,7 @@ parser.add_argument('--weight-decay', type=float, default=2e-4, help='Weight dec
 parser.add_argument('--batch-size', type=int, default=2, help='Batch size')
 parser.add_argument('--batch-size-val', type=int, default=2, help='Val Batch size')
 parser.add_argument('--model', type=str, default="segresnet34", help='Val Batch size')
+parser.add_argument('--num-classes', type=int, default=3, help='Val Batch size')
 
 args = parser.parse_args()
 random.seed(args.seed)
@@ -50,7 +51,7 @@ valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_
 
 
 cv_splitter = CVSplit(train_dataset, 0.15)
-
+num_classes = args.num_classes
 if(args.model == "segresnet34"):
     pretrained_net = FeatureResNet()
     pretrained_net.load_state_dict(models.resnet34(pretrained=True).state_dict())
