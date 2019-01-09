@@ -57,7 +57,7 @@ from PIL import Image
 #
 
 test_dir = os.listdir(get_path('A1', 'test'))
-model_name = "SegResNet_8007.1545308275.99"
+model_name = "SegResNet_5004.1547027948.2652617.9920262"
 model = torch.load("output/a1/checkpoints_/" + model_name + ".pt", map_location='cpu')
 transform = transforms.Compose([transforms.Resize((512,512)), transforms.ToTensor()])
 if not os.path.exists('output/a1/processed/' + model_name):
@@ -106,7 +106,7 @@ for i, test in enumerate(test_dir):
 
     output_image = output_image.data.numpy()
     output_image = output_image.transpose((1, 2, 0))
-    output_image = np.uint8((output_image > 0.025)*255)
+    output_image = np.uint8((output_image > 0.03)*255)
 
 
     to_ten = transforms.Compose([
