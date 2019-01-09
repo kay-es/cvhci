@@ -147,8 +147,10 @@ def train(e, train_loader, valid_loader):
             # statistics
             running_loss += loss.item()
 
-            y_p = nn.Sigmoid(outputs).view(6, -1)
-            y_t = nn.Sigmoid(target).view(6, -1)
+            outputs = nn.Sigmoid(outputs)
+            target = nn.Sigmoid(target)
+            y_p = outputs.view(6, -1)
+            y_t = target.view(6, -1)
             y_p = np.array(y_p.cpu().data) > 0.33
             y_t = np.array(y_t.cpu().data) > 0.33
 
