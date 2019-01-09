@@ -34,7 +34,7 @@ def bn(planes):
     return layer
 
 
-class FeatureResNet(ResNet):
+class FeatureResNet50(ResNet):
     def __init__(self):
         super().__init__(Bottleneck, [3, 4, 6, 3], 1000)
 
@@ -50,7 +50,7 @@ class FeatureResNet(ResNet):
         return x1, x2, x3, x4, x5
 
 
-class SegResNet(nn.Module):
+class SegResNet50(nn.Module):
     def __init__(self, num_classes, pretrained_net):
         super().__init__()
         self.pretrained_net = pretrained_net

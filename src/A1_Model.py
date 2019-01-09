@@ -89,5 +89,5 @@ class SegResNet(nn.Module):
         x = self.relu(self.bn8(self.conv8(x + x2)))
         x = self.relu(self.bn9(self.conv9(x + x1)))
 
-        x = self.sigmoid(self.conv10(x))
+        x = self.conv10(x)
         return x

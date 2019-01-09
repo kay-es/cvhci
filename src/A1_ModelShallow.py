@@ -34,7 +34,7 @@ def bn(planes):
     return layer
 
 
-class FeatureResNet(ResNet):
+class FeatureResNetShallow(ResNet):
     def __init__(self):
         super().__init__(BasicBlock, [2, 2, 2, 2], 1000)
 
@@ -50,7 +50,7 @@ class FeatureResNet(ResNet):
         return x1, x2, x3, x4, x5
 
 
-class SegResNet(nn.Module):
+class SegResNetShallow(nn.Module):
     def __init__(self, num_classes, pretrained_net):
         super().__init__()
         self.pretrained_net = pretrained_net

@@ -9,9 +9,9 @@ from torchvision import models
 import re
 from DataLoader import DataLoader, CVSplit
 from A1_UNET import UNet, CrossEntropyLoss2d
-#from A1_Model import FeatureResNet, SegResNet
-from A1_ModelShallow import FeatureResNet, SegResNet
-#from A1_ModelDeeper import FeatureResNet, SegResNet
+from A1_Model import FeatureResNet, SegResNet
+from A1_ModelShallow import FeatureResNetShallow, SegResNetShallow
+from A1_ModelDeeper import FeatureResNet50, SegResNet50
 import copy
 import time
 from sklearn.metrics import f1_score
@@ -51,12 +51,25 @@ valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_
 
 cv_splitter = CVSplit(train_dataset, 0.15)
 
+if(args.model == "segrestnet34"):
+    pretrained_net = FeatureResNet()
+    pretrained_net.load_state_dict(models.resnet34(pretrained=True).state_dict())
+    num_classes = 3  # RGB?
+    net = SegResNet(num_classes, pretrained_net)
+if (args.model == "segrestnet50"):
+    pretrained_net = FeatureResNet50()
+    pretrained_net.load_state_dict(models.resnet50(pretrained=True).state_dict())
+    num_classes = 3  # RGB?
+    net = SegResNet50(num_classes, pretrained_net)
+if (args.model == "segrestnet18"):
+    pretrained_net = FeatureResNetShallow()
+    pretrained_net.load_state_dict(models.resnet34(pretrained=True).state_dict())
+    num_classes = 3  # RGB?
+    net = SegResNetShallow(num_classes, pretrained_net)
+if (args.model == "unet"):
+    net = UNet(num_classes)
 # Training/Testing
-pretrained_net = FeatureResNet()
-#pretrained_net.load_state_dict(models.resnet18(pretrained=True).state_dict())
-num_classes = 3 #RGB?
-#net = SegResNet(num_classes, pretrained_net)
-net = UNet(num_classes)
+
 #net = PSPNet(num_classes)
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
