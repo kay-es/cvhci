@@ -51,17 +51,17 @@ valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_
 
 cv_splitter = CVSplit(train_dataset, 0.15)
 
-if(args.model == "segrestnet34"):
+if(args.model == "segresnet34"):
     pretrained_net = FeatureResNet()
     pretrained_net.load_state_dict(models.resnet34(pretrained=True).state_dict())
     num_classes = 3  # RGB?
     net = SegResNet(num_classes, pretrained_net)
-if (args.model == "segrestnet50"):
+if (args.model == "segresnet50"):
     pretrained_net = FeatureResNet50()
     pretrained_net.load_state_dict(models.resnet50(pretrained=True).state_dict())
     num_classes = 3  # RGB?
     net = SegResNet50(num_classes, pretrained_net)
-if (args.model == "segrestnet18"):
+if (args.model == "segresnet18"):
     pretrained_net = FeatureResNetShallow()
     pretrained_net.load_state_dict(models.resnet34(pretrained=True).state_dict())
     num_classes = 3  # RGB?
@@ -147,8 +147,8 @@ def train(e, train_loader, valid_loader):
             # statistics
             running_loss += loss.item()
 
-            y_p = outputs.view(6, -1)
-            y_t = target.view(6, -1)
+            y_p = nn.Sigmoid(outputs).view(6, -1)
+            y_t = nn.Sigmoid(target).view(6, -1)
             y_p = np.array(y_p.cpu().data) > 0.33
             y_t = np.array(y_t.cpu().data) > 0.33
 
