@@ -8,7 +8,7 @@ from torch.autograd import Variable
 from torchvision import models
 import re
 from DataLoader import DataLoader, CVSplit
-from A1_UNET import UNet
+from A1_UNET import UNet, CrossEntropyLoss2d
 #from A1_Model import FeatureResNet, SegResNet
 from A1_ModelShallow import FeatureResNet, SegResNet
 #from A1_ModelDeeper import FeatureResNet, SegResNet
@@ -78,8 +78,10 @@ if len(check):
     checkpoint_iter = int(re.findall(r'\d+', check[-1])[0]) + 1
     print("Resuming from iteration " + str(checkpoint_iter))
 
+
+
 # Define Hyperparams
-crit = nn.BCELoss()
+crit = CrossEntropyLoss2d()
 if torch.cuda.is_available():
     crit.cuda()
 
