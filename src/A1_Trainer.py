@@ -29,6 +29,8 @@ parser.add_argument('--lr', type=float, default=5e-4, help='Learning rate')
 parser.add_argument('--momentum', type=float, default=0.2, help='Momentum')
 parser.add_argument('--weight-decay', type=float, default=2e-4, help='Weight decay')
 parser.add_argument('--batch-size', type=int, default=2, help='Batch size')
+parser.add_argument('--batch-size-val', type=int, default=2, help='Val Batch size')
+parser.add_argument('--model', type=str, default="segresnet34", help='Val Batch size')
 
 args = parser.parse_args()
 random.seed(args.seed)
@@ -41,7 +43,7 @@ train_dataset = DataLoader.A1().get_train_loader()
 valid_dataset = DataLoader.A1().get_validation_loader()
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
                                              num_workers=args.workers, pin_memory=True)
-valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_size, num_workers=args.workers,
+valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_size_val, num_workers=args.workers,
                                          pin_memory=True)
 
 
