@@ -39,9 +39,9 @@ torch.manual_seed(args.seed)
 # Data
 train_dataset = DataLoader.A1().get_train_loader()
 valid_dataset = DataLoader.A1().get_validation_loader()
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=7, shuffle=True,
+train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True,
                                              num_workers=args.workers, pin_memory=True)
-valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=1, num_workers=args.workers,
+valid_loader = torch.utils.data.DataLoader(valid_dataset, batch_size=args.batch_size, num_workers=args.workers,
                                          pin_memory=True)
 
 
