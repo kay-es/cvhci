@@ -81,7 +81,7 @@ if len(check):
 
 
 # Define Hyperparams
-crit = CrossEntropyLoss2d()
+crit = nn.BCEWithLogitsLoss()
 if torch.cuda.is_available():
     crit.cuda()
 
